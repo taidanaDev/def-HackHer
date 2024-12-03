@@ -1,29 +1,137 @@
-{% extends "base.html" %} {% block title %}LOGIN{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
 
 {% block content %}
- <form method="POST">
-  <h3 align="center">Login</h3>
-  <div class="form-group">
-    <label for="email">Email Address</label>
-    <input
-      type="email"
-      class="form-control"
-      id="email"
-      name="email"
-      placeholder="Enter email"
-    />
+<!-- Include Bootstrap Icons for icons -->
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+  body {
+    background-image: url("https://i.imghippo.com/files/Ibc7235chk.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: Arial, Roboto;
+    margin: 0;
+    padding: 0;
+  }
+
+  .login-container {
+    max-width: 400px;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 15px;
+    margin: 50px auto; /* Center the container */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+  }
+
+  .form-title {
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    text-align: center;
+    color: white;
+  }
+
+  .login-btn {
+    background: #007BFF;
+    color: white;
+    border: none;
+  }
+
+  .login-btn:hover {
+    background: #0056b3;
+  }
+
+  .form-label {
+    color: white;
+    font-size: 14px;
+    margin-bottom: 5px; /* Space between label and input */
+  }
+
+  .input-group {
+    position: relative;
+    margin-bottom: 20px; /* Space between inputs */
+  }
+
+  .input-group .form-control {
+    padding-right: 40px; /* Space for the icon on the right */
+    height: 40px; /* Consistent height */
+    border-radius: 25px; /* Rounded corners */
+  }
+
+  .input-group i {
+    position: absolute;
+    top: 50%;
+    right: 10px; /* Position the icon on the right */
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #333;
+    background-color: white;
+    padding: 8px;
+    border-radius: 50%; /* Make the icon background circular */
+  }
+
+  .form-check-label {
+    color: white;
+  }
+
+  .form-check-label a {
+    color: #00aced;
+  }
+
+  .form-check-label a:hover {
+    text-decoration: underline;
+  }
+
+  .alert {
+    margin-top: 15px;
+    border-radius: 5px;
+  }
+</style>
+
+<div class="container d-flex align-items-center justify-content-start vh-100">
+  <div class="login-container shadow" style="margin-left: 50px;">
+    <h2 class="form-title">Login</h2>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="alert alert-{{ messages[0][0] }} mt-3">
+          {% for category, message in messages %}
+            <p>{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Login Form -->
+    <form method="POST" action="{{ url_for('auth.login') }}">
+      <!-- Email Input -->
+      <div class="mb-3">
+        <label for="email" class="form-label">Email Address</label>
+        <input type="email" class="form-control" id="email" name="email" aria-label="Email Address" required>
+      </div>
+
+      <!-- Password Input -->
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password" aria-label="Password" required>
+      </div>
+
+      <!-- Remember Me -->
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="remember" name="remember">
+        <label class="form-check-label" for="remember">Remember Me</label>
+      </div>
+
+      <!-- Login Button -->
+      <button type="submit" class="btn login-btn w-100">Login</button>
+    </form>
   </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input
-      type="password"
-      class="form-control"
-      id="password"
-      name="password"
-      placeholder="Enter password"
-    />
-  </div>
-  <br />
-  <button type="submit" class="btn btn-primary">Login</button>
-</form>
+</div>
+
 {% endblock %}
