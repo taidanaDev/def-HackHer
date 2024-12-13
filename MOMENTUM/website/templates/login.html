@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<!-- Include Bootstrap Icons for icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+  body {
+    background-image: url("https://i.imghippo.com/files/Ibc7235chk.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: Arial, Roboto;
+    margin: 0;
+    padding: 0;
+  }
+
+  .login-container {
+    max-width: 400px;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 15px;
+    margin: 50px auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+  }
+
+  .form-title {
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    text-align: center;
+    color: white;
+  }
+
+  .login-btn {
+    background: #007BFF;
+    color: white;
+    border: none;
+  }
+
+  .login-btn:hover {
+    background: #0056b3;
+  }
+
+  .form-label {
+    color: white;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+
+  .input-group {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .input-group .form-control {
+    padding-right: 40px;
+    height: 40px;
+    border-radius: 5px;
+  }
+
+  .input-group i {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #666;
+    cursor: pointer;
+  }
+
+  .form-check-label {
+    color: white;
+  }
+
+  .form-check-label a {
+    color: #00aced;
+  }
+
+  .form-check-label a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="container d-flex align-items-center justify-content-start vh-100">
+  <div class="login-container shadow" style="margin-left: 50px;">
+    <h2 class="form-title">Login</h2>
+    <form method="POST" action="/login">
+      <!-- Email Input -->
+      <div class="mb-3">
+        <label for="email" class="form-label">Email Address</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+      </div>
+
+      <!-- Password Input -->
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <div class="input-group">
+          <input type="password" class="form-control" id="password" name="password" required>
+          <i class="bi bi-eye" id="togglePassword"></i>
+        </div>
+      </div>
+
+      <!-- Remember Me -->
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="remember" name="remember">
+        <label class="form-check-label" for="remember">Remember Me</label>
+      </div>
+
+      <!-- Login Button -->
+      <button type="submit" class="btn login-btn w-100">Login</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Toggle Password Visibility
+  const togglePassword = document.getElementById('togglePassword');
+  const passwordField = document.getElementById('password');
+
+  togglePassword.addEventListener('click', () => {
+    const type = passwordField.type === 'password' ? 'text' : 'password';
+    passwordField.type = type;
+    // Toggle icon class
+    togglePassword.classList.toggle('bi-eye');
+    togglePassword.classList.toggle('bi-eye-slash');
+  });
+</script>
+
+{% endblock %}

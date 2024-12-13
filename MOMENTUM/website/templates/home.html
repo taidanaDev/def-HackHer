@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1 align="center">Dashboard</h1>
+
+  <div class="row">
+    <!-- Tasks Section -->
+    <div class="col-md-4">
+      <h2>Tasks</h2>
+      <ul class="list-group list-group-flush" id="tasks">
+        {% for task in tasks %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <input 
+              type="checkbox" 
+              onChange="markTaskDone({{ task.id }}, this.checked)" 
+              {% if task.is_done %}checked{% endif %}
+            >
+            <span style="{% if task.is_done %}text-decoration: line-through;{% endif %}">
+              {{ task.title }}
+            </span>
+          </div>
+          <button type="button" class="btn btn-danger btn-sm" onClick="deleteTask({{ task.id }})">
+            &times;
+          </button>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Calendar Section -->
+    <div class="col-md-8">
+      <h2>Calendar</h2>
+      <div id="calendar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Include FullCalendar Scripts -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const calendarEl = document.getElementById('calendar');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      events: [
+        {% for task in tasks %}
+        {
+          title: "{{ task.title }}",
+          start: "{{ task.date }}",
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ],
+      navLinks: true,
+      editable: true,
+      selectable: true,
+      dateClick: function(info) {
+        const title = prompt('Enter task title for ' + info.dateStr);
+        if (title) {
+          // AJAX call to create a new task
+          fetch('/add', {
+            method: 'POST',
+            body: JSON.stringify({ title: title, date: info.dateStr }),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }).then((_res) => {
+            window.location.href = "/";
+          });
+        }
+      },
+    });
+    calendar.render();
+  });
+
+  // Function to delete a task (AJAX)
+  function deleteTask(taskId) {
+    fetch('/delete-task', {
+      method: 'POST',
+      body: JSON.stringify({ taskId: taskId }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((_res) => {
+      window.location.href = "/";
+    });
+  }
+
+  // Function to mark a task as done
+  function markTaskDone(taskId, isDone) {
+    fetch('/update-task-status', {
+      method: 'POST',
+      body: JSON.stringify({ taskId: taskId, isDone: isDone }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((_res) => {
+      window.location.href = "/";
+    });
+  }
+</script>
+
+{% endblock %}
