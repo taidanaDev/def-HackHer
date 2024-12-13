@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+  body {
+    background-image: url("https://i.imghippo.com/files/jqI5392fTk.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: Arial, Roboto;
+    margin: 0;
+    padding: 0;
+  }
+
+  .signup-container {
+    max-width: 400px;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 15px;
+    margin: 50px auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+  }
+
+  .form-title {
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    text-align: center;
+    color: white;
+  }
+
+  .signup-btn {
+    background: #007BFF;
+    color: white;
+    border: none;
+  }
+
+  .signup-btn:hover {
+    background: #0056b3;
+  }
+
+  .form-label {
+    color: white;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+
+  .input-group {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .input-group input {
+    height: 40px;
+    border-radius: 25px;
+  }
+
+  .input-group .toggle-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+  }
+
+  .form-check-label {
+    color: white;
+  }
+
+  .form-check-label a {
+    color: #00aced;
+  }
+
+  .form-check-label a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="container d-flex align-items-center justify-content-start vh-100">
+  <div class="signup-container shadow" style="margin-left: 70px;">
+    <form method="POST" action="{{ url_for('auth.sign_up') }}">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email Address</label>
+        <div class="input-group">
+          <input 
+          type="email" 
+          class="form-control" 
+          id="email" 
+          name="email" 
+          />
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <div class="input-group">
+          <input 
+          type="text" 
+          class="form-control" 
+          id="name" 
+          name="name" 
+          />
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <div class="input-group">
+          <input 
+          type="password" 
+          class="form-control" 
+          id="password1" 
+          name="password1" 
+          />
+          <i class="bi bi-eye" id="togglePassword"></i>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="password2" class="form-label">Confirm Password</label>
+        <div class="input-group">
+          <input 
+          type="password" 
+          class="form-control" 
+          id="password2" 
+          name="password2" 
+          />
+          <i class="bi bi-eye" id="togglePassword"></i>
+        </div>
+      </div>
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
+        <label class="form-check-label" for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+      </div>
+      <button type="submit" class="btn signup-btn w-100">Sign Up</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Toggle Password Visibility
+  const togglePassword = document.getElementById('togglePassword');
+  const passwordField = document.getElementById('password');
+
+  togglePassword.addEventListener('click', () => {
+    const type = passwordField.type === 'password' ? 'text' : 'password';
+    passwordField.type = type;
+    // Toggle icon class
+    togglePassword.classList.toggle('bi-eye');
+    togglePassword.classList.toggle('bi-eye-slash');
+  });
+</script>
+{% endblock %}
